@@ -8,10 +8,11 @@ If you don't know why you want to create a virtual host, you can refer to [the o
 
 ### Requirements
 
- * I assume you have a bare debian system (Ubuntu is fine).
- * You have [`sudo`](https://wiki.debian.org/sudo) installed
+ * A debian-like system (Ubuntu is fine).
+ * The [`sudo`](https://wiki.debian.org/sudo) package installed
  * I recommend that you install first the PHP and MySQL version you want.
- * You have an **access to a sudo user shell**.
+ * An **access to a sudo user shell**.
+ * If you going with the automatic installation, the sha1sum and wget packages installed.
 
 ### How does it work?
 
@@ -24,6 +25,7 @@ You can customize :
 
 * The configuration files directory, *default is `/etc/apache2/sites-available/` (which is Apache default)*
 * The log files directory, *default is `/var/log/web/`*
+* All the variable in the begining of the bash script
 
 ### Installation
 
@@ -38,7 +40,7 @@ wget -qO- http://aduh95.free.fr/setupApacheVirtualHost.sh | sh
 
 > If you prefere a manual install, just put the setup file on your server (using *git*, *scp*, *wget* or just *copy/paste it on a text editor*), modify the lines you don't like, and then run `chmod +x setup.sh && ./setup.sh`.
 
-To be sure it is correctly installed, you can type the following commands :
+To be sure it has been correctly installed, you can use the following commands :
 
 ```shell
 source ~/.bashrc
