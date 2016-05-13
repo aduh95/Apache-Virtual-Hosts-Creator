@@ -12,7 +12,7 @@ If you don't know why you want to create a virtual host, you can refer to [the o
  * The [`sudo`](https://wiki.debian.org/sudo) package installed
  * I recommend that you install first the PHP and MySQL version you want.
  * An **access to a sudo user shell**.
- * If you going with the automatic installation, the sha1sum and wget packages installed.
+ * If you going with the automatic installation, the `sha1sum` and `wget` packages installed.
 
 ### How does it work?
 
@@ -61,11 +61,11 @@ Now, you can run those aliases (`newApacheVH` and `delApacheVH`) to create or de
 newApacheVH
 ```
 
-It will ask you a few question, then you should be started!
+It will ask you some questions, then you should be started!
 
-### What if a want to delete it?
+### What if I want to delete it?
 
-I don't see why you would need such a thing (since my code is obviously perfect in any situation), but here are the steps needed :
+I don't see why you would need such a thing (since my code is obviously perfect in any situation), but here are the steps to follow :
 
 ```shell
 sudo rm /root/newApacheVirtualHost.sh
