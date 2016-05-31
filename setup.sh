@@ -14,8 +14,9 @@
 
 # Folder where virtual host configuration files are stored
 apacheConfDir="/etc/apache2/sites-available"
-# Web files will be if $wwwDir/$user/www
-wwwDir="/home"
+# Web files will be if $homeDir/$user/$documentRootDir
+homeDir="/home"
+documentRootDir="www"
 # Folder where the logs should be saved
 logDir="/var/log/web"
 # Folder where the PHP errors and notices are written (you have to set it in php.ini)
@@ -34,7 +35,7 @@ if [ $(id -u) != "0" ]; then
 	echo "Here are the paths that this script will follow to configure your system:"
 	echo "------------------------------------------------------------------------"
 	echo "Apache conf files:              $apacheConfDir"
-	echo "DocumentRoot:                   $wwwDir/[user]/www"
+	echo "DocumentRoot:                   $homeDir/[user]/$documentRootDir"
 	echo "Log files:                      $logDir/[host]/*.log"
 	echo "PHP log file:                   $phpLog"
 	echo "------------------------------------------------------------------------"
@@ -55,7 +56,8 @@ else
 fi
 
 confVars="apacheConfDir=\"$apacheConfDir\"
-wwwDir=\"$wwwDir\"
+homeDir=\"$homeDir\"
+documentRootDir=\"$documentRootDir\"
 logDir=\"$logDir\"
 phpLog=\"\$logDir/php_errors.log\""
 
@@ -69,13 +71,13 @@ else
 fi
 
 # Creation of the folders
-mkdir -p /var/log/web
-mkdir -p /etc/apache2/sites-available/VirtualHosts
+mkdir -p "$logDir"
+mkdir -p "$apacheConfDir/VirtualHosts"
 
 
 # Creation of the bash file to create a virtual host
-touch /root/newVirtualHost.sh
-touch /root/deleteVirtualHost.sh
+touch /root/newApacheVirtualHost.sh
+touch /root/deleteApacheVirtualHost.sh
 
 # Color seter
 color='red=`tput setaf 1`
@@ -125,16 +127,16 @@ else
 	adduser www-data \$userName
 
 	# Creation of the folders
-	# mkdir \"\$wwwDir/\$userName\" -- already created
-	mkdir \"\$wwwDir/\$userName/www\"
-	touch \"\$wwwDir/\$userName/www/index.html\"
-	echo \"<html><head><title>\$hostName works!</title></head><body><p>Welcome on the new Apache Virtual Host!<br/>Set with <a href='https://github.com/aduh95/Apache-Virtual-Hosts-Creator'>Apache-Virtual-Hosts-Creator</a></p></body></html>\" > \"\$wwwDir/\$userName/www/index.html\"
-	chown \$userName:\$userName \"\$wwwDir/\$userName/www\"
-	chown \$userName:\$userName \"\$wwwDir/\$userName/www/index.html\"
-	chmod 774 \"\$wwwDir/\$userName/www\"
+	# mkdir \"\$homeDir/\$userName\" -- already created
+	mkdir \"\$homeDir/\$userName/\$documentRootDir\"
+	touch \"\$homeDir/\$userName/\$documentRootDir/index.html\"
+	echo \"<html><head><title>\$hostName works!</title></head><body><p>Welcome on the new Apache Virtual Host!<br/>Set with <a href='https://github.com/aduh95/Apache-Virtual-Hosts-Creator'>Apache-Virtual-Hosts-Creator</a></p></body></html>\" > \"\$homeDir/\$userName/\$documentRootDir/index.html\"
+	chown \$userName:\$userName \"\$homeDir/\$userName/\$documentRootDir\"
+	chown \$userName:\$userName \"\$homeDir/\$userName/\$documentRootDir/index.html\"
+	chmod 775 -R \"\$homeDir/\$userName/\$documentRootDir\"
 	mkdir \"\$logDir/\$hostName\"
 	# Création d'un lien vers les logs
-	ln -s \"\$logDir/\$hostName/\" \"\$wwwDir/\$userName/logs\"
+	ln -s \"\$logDir/\$hostName/\" \"\$homeDir/\$userName/logs\"
 	ln -s \$phpLog \"\$logDir/\$hostName/php_errors.log\"
 
 	# Creation of the configuration file
@@ -145,11 +147,11 @@ else
 	ServerAlias www.\$hostName
 
 	# You really should not change those lines
-	DocumentRoot \$wwwDir/\$userName/www/
+	DocumentRoot \$homeDir/\$userName/\$documentRootDir/
 	ErrorLog \$logDir/\$hostName/error.log
 	CustomLog \$logDir/\$hostName/access.log combined
 
-	<Directory \$wwwDir/\$userName/www/>
+	<Directory \$homeDir/\$userName/\$documentRootDir/>
 			Options Indexes FollowSymLinks
 			
 			# .htaccess files will be ignored
@@ -166,7 +168,7 @@ else
 \" >> \$file
 	echo \$hostName >> \$apacheConfDir/VirtualHosts/\$userName.vh
 	chown \$userName \$file
-	ln -s \$file \$wwwDir/\$userName/virtualHost.conf
+	ln -s \$file \$homeDir/\$userName/virtualHost.conf
 
 	# Activation of the host
 	a2ensite \"\$hostName\" && read -p \"Apache is going to restart. Press enter to restart the apache2 service...\" __var
@@ -191,7 +193,7 @@ if [ \$# -eq 1 ]; then
 else
 	read -p \"Name of the \${green}username\${reset} set to the Virtual Host \${red}to delete\${reset} : \" userName
 fi
-if [ -d \"\$wwwDir/\$userName\" ] && [ -f \"\$apacheConfDir/VirtualHosts/\$userName.vh\" ]; then
+if [ -d \"\$homeDir/\$userName\" ] && [ -f \"\$apacheConfDir/VirtualHosts/\$userName.vh\" ]; then
 	hostName=\`cat \$apacheConfDir/VirtualHosts/\$userName.vh\`
 else
 	echo \"Cannot find user's virtual host! Aborted\"
@@ -203,8 +205,8 @@ file=\"\$apacheConfDir/\$hostName.conf\"
 if [ -f \$file ]
 then
 	# Check if the www dir is empty
-	if find \"\$wwwDir/\$userName/www\" -mindepth 1 -print -quit | grep -q .; then
-		echo \"The www (\$wwwDir/\$userName) directory should be empty! Aborted\"
+	if find \"\$homeDir/\$userName/\$documentRootDir\" -mindepth 1 -print -quit | grep -q .; then
+		echo \"The \$homeDir/\$userName/\$documentRootDir directory should be empty! Aborted\"
 		exit 2
 	else
 		#Deleting the vh
@@ -213,7 +215,7 @@ then
 		read -p \"The logs are about \${red}to be removed\${reset}! Press entrer to continue...\" __var
 		rm -r \"\$logDir/\$hostName\"
 		a2dissite \$hostName
-		rm -r \"\$wwwDir/\$userName\"
+		rm -r \"\$homeDir/\$userName\"
 		rm \$file
 		rm \$apacheConfDir/VirtualHosts/\$userName.vh
 		
