@@ -43,7 +43,7 @@ if [ $(id -u) != "0" ]; then
 	echo "If your are not happy with those settings, feel free to change it - if you know what you are doing"
 	echo
 
-	read -p "Press enter to continue (in sudo mode)..."
+	read -p "Press enter tox continue (in sudo mode)..." </dev/tty
 	sudo $0 "$USER" "$HOME" noDirectRootExecution || exit -1
 	source "$HOME/.bashrc"
 	rm -- $0
@@ -243,7 +243,7 @@ chmod +x /root/*ApacheVirtualHost.sh
 
 
 # Creation of the aliases
-read -p "Do you want to create the aliases? (If you don't know what that mean, you should) (y/n):" -n 1 -r
+read -p "Do you want to create the aliases? (If you don't know what that mean, you should) (y/n):" -n 1 -r </dev/tty
 echo	# (optional) move to a new line
 if [[ ! $REPLY =~ ^[Yy]$ ]]
 then
