@@ -6,7 +6,7 @@
 # Run the following instruction to make it works
 # chmod +x setup.sh
 # ./setup.sh
-# 
+#
 # @author aduh95
 # @github https://github.com/aduh95/Apache-Virtual-Hosts-Creator/edit/master/README.md
 #
@@ -76,7 +76,7 @@ mkdir -p "$apacheConfDir/VirtualHosts"
 
 
 # Creation of the bash file to create a virtual host
-touch /root/newApacheVirtualHost.sh
+touch /root/createApacheVirtualHost.sh
 touch /root/deleteApacheVirtualHost.sh
 
 # Color seter
@@ -153,13 +153,13 @@ else
 
 	<Directory \$homeDir/\$userName/\$documentRootDir/>
 			Options Indexes FollowSymLinks
-			
+
 			# .htaccess files will be ignored
 			AllowOverRide None
-			
+
 			# Disable directory listing
-			IndexIgnore * 
-			
+			IndexIgnore *
+
 			Require all granted
 			Order Allow,Deny
 			Allow from all
@@ -173,7 +173,7 @@ else
 	# Activation of the host
 	a2ensite \"\$hostName\" && read -p \"Apache is going to restart. Press enter to restart the apache2 service...\" __var
 	service apache2 reload
-	
+
 	echo
 	echo \"Your virtual host is now installed!\"
 	echo \"You can run the command '\${green}su\${reset} \${yellow}\$userName\${reset}' to configure it and go to '\${yellow}http://\$hostName/\${reset}' to check out the result.\"
@@ -218,9 +218,9 @@ then
 		rm -r \"\$homeDir/\$userName\"
 		rm \$file
 		rm \$apacheConfDir/VirtualHosts/\$userName.vh
-		
+
 		deluser www-data \$userName
-		
+
 		read -p \"Do you want \${red}to delete\${reset} the user '\$userName'? (y/n):\" -n 1 -r
 		echo
 		if [[ \$REPLY =~ ^[Yy]$ ]]; then
@@ -264,4 +264,3 @@ chown $1 "$2/.bash_aliases"
 # End of the installation
 echo "Installation completed"
 echo "To create a new Virtual Host, you can run the 'newApacheVH' alias, and 'delApacheVH' to delete one."
-

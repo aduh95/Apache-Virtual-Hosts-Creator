@@ -32,10 +32,7 @@ You can customize :
 If you are OK with the default value (and if you trust me ;) ), just run the following command :
 
 ```shell
-wget -qO- http://aduh95.free.fr/setupApacheVirtualHost.sh | sh
-# Then type the name of the script given at the end of the downloading
-# It might look like that
-/tmp/tmp.InGf4CViTP
+wget -O- https://raw.githubusercontent.com/aduh95/Apache-Virtual-Hosts-Creator/master/download.sh | sh
 ```
 
 > If you prefere a manual install, just put the setup file on your server (using *git*, *scp*, *wget* or just *copy/paste it on a text editor*), modify the lines you don't like, and then run `chmod +x setup.sh && ./setup.sh`.
@@ -51,7 +48,7 @@ You should see something like :
 
 ```text
 alias ls='ls --color=auto'
-alias newApacheVH='sudo /root/newVirtualHost.sh'
+alias newApacheVH='sudo /root/createVirtualHost.sh'
 alias delApacheVH='sudo /root/deleteVirtualHost.sh'
 ```
 
@@ -68,7 +65,7 @@ It will ask you some questions, then you should be started!
 I don't see why you would need such a thing (since my code is obviously perfect in any situation), but here are the steps to follow :
 
 ```shell
-sudo rm /root/newApacheVirtualHost.sh
+sudo rm /root/createApacheVirtualHost.sh
 sudo rm /root/deleteApacheVirtualHost.sh
 nano ~/.bash_aliases
 ```
