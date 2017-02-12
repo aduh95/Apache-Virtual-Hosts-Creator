@@ -12,7 +12,7 @@ If you don't know why you want to create a virtual host, you can refer to [the o
  * The [`sudo`](https://wiki.debian.org/sudo) package installed
  * I recommend that you install first the PHP and MySQL version you want.
  * An **access to a sudo user shell**.
- * If you going with the automatic installation, the `sha1sum` and `wget` packages installed.
+ * If you going with the automatic installation, the `sha1sum` and `wget` packages installed (which is default on Debian Jessie).
 
 ### How does it work?
 
@@ -29,13 +29,16 @@ You can customize :
 
 ### Installation
 
-If you are OK with the default value (and if you trust me ;) ), just run the following command :
+If you are OK with the default value (and if you trust me ;) ), just run the following command to download and execute the setup script from a *sudo user* (an not **root**) CLI :
 
 ```shell
 wget -O- https://raw.githubusercontent.com/aduh95/Apache-Virtual-Hosts-Creator/master/download.sh | sh
 ```
 
-> If you prefere a manual install, just put the setup file on your server (using *git*, *scp*, *wget* or just *copy/paste it on a text editor*), modify the lines you don't like, and then run `chmod +x setup.sh && ./setup.sh`.
+> If you want to install it as **root user** (which is not recommended), you have to download the setup file as described bellow and execute it with the following instruction: `./setup.sh root /root/ noDirectRootExecution`<
+
+> If you prefere a manual install, just put the setup file on your server (using *git*, *scp*, *wget* or just *copy/paste it on a text editor*), modify the lines you don't like, and then run `chmod +x setup.sh && ./setup.sh`
+
 
 To be sure it has been correctly installed, you can use the following commands :
 

@@ -12,12 +12,12 @@
 setupScript=`mktemp`
 
 echo "Downloading the scripts..."
-wget -O "$setupScript" https://raw.githubusercontent.com/aduh95/Apache-Virtual-Hosts-Creator/master/setup.sh
+wget -qO "$setupScript" https://raw.githubusercontent.com/aduh95/Apache-Virtual-Hosts-Creator/master/setup.sh
 
 chmod +x "$setupScript"
 
 echo
 echo "Checking SHA1 sum..."
-echo "6d5ece45a6f3211f828a398c5e97711465d55381 $setupScript" | sha1sum -c - && bash "$setupScript"
+echo "e8a428fcc655308feb8c08cca1b7d07d2d0f9338 $setupScript" | sha1sum -c - && bash "$setupScript"
 
 rm -f "$setupScript"
