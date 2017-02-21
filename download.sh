@@ -18,6 +18,6 @@ chmod +x "$setupScript"
 
 echo
 echo "Checking SHA1 sum..."
-echo "e8a428fcc655308feb8c08cca1b7d07d2d0f9338 $setupScript" | sha1sum -c - && bash "$setupScript"
+echo "682883e568387496e65a41fdbaa2dcbce2125dfe $setupScript" | sha1sum -c - && bash "$setupScript"
 
 rm -f "$setupScript"
